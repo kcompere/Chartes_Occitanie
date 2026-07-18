@@ -1,0 +1,122 @@
+[
+  {
+    "id": "eclat",
+    "nom": "Éclat",
+    "description": "Palette expressive : violet profond, fuchsia, orange, turquoise et vert anis.",
+    "primary": "#391C46",
+    "secondary": "#C82670",
+    "accent": "#F9711B",
+    "softBackground": "#F7F1F8",
+    "panelBackground": "#FFFFFF",
+    "border": "#D8C4DE",
+    "text": "#231428",
+    "mutedText": "#66536E",
+    "swatches": [
+      { "label": "Couleur 1", "color": "#391C46" },
+      { "label": "Couleur 2", "color": "#C82670" },
+      { "label": "Couleur 3", "color": "#F9711B" },
+      { "label": "Couleur 4", "color": "#1AA1A4" },
+      { "label": "Couleur 5", "color": "#C3BA28" }
+    ]
+  },
+  {
+    "id": "horizon",
+    "nom": "Horizon",
+    "description": "Palette ouverte et dynamique : violet, bleu, turquoise, corail et jaune.",
+    "primary": "#6F498E",
+    "secondary": "#236AB7",
+    "accent": "#2F9D96",
+    "softBackground": "#F4F6FB",
+    "panelBackground": "#FFFFFF",
+    "border": "#CCC3DC",
+    "text": "#1E2430",
+    "mutedText": "#596276",
+    "swatches": [
+      { "label": "Couleur 1", "color": "#6F498E" },
+      { "label": "Couleur 2", "color": "#236AB7" },
+      { "label": "Couleur 3", "color": "#2F9D96" },
+      { "label": "Couleur 4", "color": "#F16462" },
+      { "label": "Couleur 5", "color": "#FDB642" }
+    ]
+  },
+  {
+    "id": "republique",
+    "nom": "République",
+    "description": "Palette officielle et sobre : bleu, rouge, cumulus, fond clair et texte sombre.",
+    "primary": "#00008F",
+    "secondary": "#E00016",
+    "accent": "#427CC2",
+    "softBackground": "#F5F5F5",
+    "panelBackground": "#FFFFFF",
+    "border": "#D0D0D8",
+    "text": "#232323",
+    "mutedText": "#5D5D66",
+    "swatches": [
+      { "label": "Couleur 1", "color": "#00008F" },
+      { "label": "Couleur 2", "color": "#E00016" },
+      { "label": "Couleur 3", "color": "#427CC2" },
+      { "label": "Couleur 4", "color": "#F5F5F5" },
+      { "label": "Couleur 5", "color": "#232323" }
+    ]
+  },
+  {
+    "id": "patrimoine",
+    "nom": "Patrimoine",
+    "description": "Palette institutionnelle chaleureuse : bleu nuit, rouge, blanc cassé, doré et gris.",
+    "primary": "#172E45",
+    "secondary": "#B7261E",
+    "accent": "#BE8F50",
+    "softBackground": "#FAF9FA",
+    "panelBackground": "#FFFFFF",
+    "border": "#C3C3C3",
+    "text": "#172E45",
+    "mutedText": "#5F6670",
+    "swatches": [
+      { "label": "Couleur 1", "color": "#172E45" },
+      { "label": "Couleur 2", "color": "#B7261E" },
+      { "label": "Couleur 3", "color": "#FAF9FA" },
+      { "label": "Couleur 4", "color": "#BE8F50" },
+      { "label": "Couleur 5", "color": "#C3C3C3" }
+    ]
+  },
+  {
+    "id": "automne",
+    "nom": "Automne",
+    "description": "Palette sobre et dense : noir, anthracite, taupe, doré mat et crème.",
+    "primary": "#1F1F1E",
+    "secondary": "#414140",
+    "accent": "#BD945A",
+    "softBackground": "#EEDEBF",
+    "panelBackground": "#FFF9EE",
+    "border": "#D8C7A7",
+    "text": "#1F1F1E",
+    "mutedText": "#6A5A48",
+    "swatches": [
+      { "label": "Couleur 1", "color": "#1F1F1E" },
+      { "label": "Couleur 2", "color": "#414140" },
+      { "label": "Couleur 3", "color": "#796353" },
+      { "label": "Couleur 4", "color": "#BD945A" },
+      { "label": "Couleur 5", "color": "#EEDEBF" }
+    ]
+  },
+  {
+    "id": "terroir",
+    "nom": "Terroir",
+    "description": "Palette douce et territoriale : terre battue, tilleul, café crème, fond clair et texte brun.",
+    "primary": "#E3784B",
+    "secondary": "#B5A541",
+    "accent": "#CFB57F",
+    "softBackground": "#F9F6F1",
+    "panelBackground": "#FFFFFF",
+    "border": "#D9C6B8",
+    "text": "#2E2925",
+    "mutedText": "#6F5B4F",
+    "swatches": [
+      { "label": "Couleur 1", "color": "#E3784B" },
+      { "label": "Couleur 2", "color": "#B5A541" },
+      { "label": "Couleur 3", "color": "#CFB57F" },
+      { "label": "Couleur 4", "color": "#F9F6F1" },
+      { "label": "Couleur 5", "color": "#2E2925" }
+    ]
+  }
+]

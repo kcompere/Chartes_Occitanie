@@ -1,0 +1,88 @@
+{
+  "applicationVersion": "3.1.0",
+  "dateCreation": "2026-07-18T00:00:00.000Z",
+  "format": "a4",
+  "paletteGraphique": "terroir",
+  "service": {
+    "nom": "BSI Montauban",
+    "dateValidation": "2026-06-29",
+    "introduction": "Cette charte décline, pour notre service, les comportements concrets qui rendent le travail collectif plus juste, plus lisible et plus serein.",
+    "logo": {
+      "dataUrl": "",
+      "name": "",
+      "type": ""
+    }
+  },
+  "options": {
+    "inclure_definitions_completes": false,
+    "palette_graphique": "terroir",
+    "police_document": "marianne"
+  },
+  "phraseFinaleEngagement": "Nous nous engageons collectivement à faire vivre ces principes dans nos décisions, nos paroles et nos pratiques quotidiennes.",
+  "engagements": {
+    "collegue": [
+      { "texte": "Je me rends disponible" },
+      { "texte": "J'aide un collègue en difficulté" },
+      { "texte": "J'écoute sans préjugés" },
+      { "texte": "Je partage l'information" },
+      { "texte": "Je valorise le travail d'autrui" },
+      { "texte": "Je remercie les autres" },
+      { "texte": "J'aborde autrui positivement" },
+      { "texte": "Je suis indulgent" },
+      { "texte": "Je vais vers les autres" },
+      { "texte": "Je salue mes collègues" }
+    ],
+    "professionnel": [
+      { "texte": "Je suis autonome" },
+      { "texte": "Je rends compte" },
+      { "texte": "Je suis force de proposition" },
+      { "texte": "Je suis exemplaire" },
+      { "texte": "J'assume mes erreurs" },
+      { "texte": "Je fais ma juste part" },
+      { "texte": "Je tiens mes engagements" },
+      { "texte": "Je respecte les règles" },
+      { "texte": "Je ne manipule pas" }
+    ],
+    "equipe": [
+      { "texte": "Je participe au collectif" },
+      { "texte": "Je construis des projets communs" },
+      { "texte": "Je fais circuler l'information" },
+      { "texte": "Je privilégie le dialogue" },
+      { "texte": "J'assure l'égalité de traitement" },
+      { "texte": "J'accorde ma confiance" },
+      { "texte": "Je respecte les usages" }
+    ]
+  },
+  "valuesRetenues": [
+    {
+      "id": "solidarite",
+      "items": [
+        { "texte": "Je me rends disponible pour un collègue qui en a besoin." },
+        { "texte": "Je me mobilise pour aider un collègue en difficulté." },
+        { "texte": "Je participe activement au travail collectif au sein de mon service." },
+        { "texte": "Lorsque cela dérape, je me mobilise pour trouver une solution." },
+        { "texte": "J'attends de ma hiérarchie qu'elle soit à l'écoute." }
+      ]
+    },
+    {
+      "id": "respect",
+      "items": [
+        { "texte": "Je fais preuve de politesse : bonjour, merci, au revoir." },
+        { "texte": "Je maintiens le niveau de propreté du matériel et des espaces partagés." },
+        { "texte": "Je laisse un espace d'expression à tous les collègues." },
+        { "texte": "J'évite les insultes, l'ironie, la violence physique et les comportements déplacés." },
+        { "texte": "Je veille à m'excuser, m'expliquer et reconnaître mes torts." }
+      ]
+    },
+    {
+      "id": "convivialite",
+      "items": [
+        { "texte": "Je participe et m'implique dans les moments de convivialité organisés." },
+        { "texte": "Je propose et organise des moments collectifs en début ou fin de service." },
+        { "texte": "J'évite d'exclure certaines personnes et j'évite d'être négatif." },
+        { "texte": "Quand il y a des tensions, on en parle et on définit des limites." },
+        { "texte": "J'attends de la hiérarchie l'organisation de moments conviviaux après les affaires importantes." }
+      ]
+    }
+  ]
+}

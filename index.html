@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chartes_Douane_Occitanie</title>
+  <link rel="stylesheet" href="styles.css">
+  <style id="print-page-style"></style>
+  <script defer src="vendor/jspdf.umd.min.js"></script>
+  <script defer src="vendor/fflate.min.js"></script>
+  <script defer src="data/values-schema-inline.js"></script>
+  <script defer src="data/values-inline.js"></script>
+  <script defer src="data/pdf-resources-inline.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="pdf-export.js"></script>
+</head>
+<body class="format-a4 print-a4">
+  <div class="app-shell">
+    <header class="page-header no-print">
+      <div class="page-header__content">
+        <p class="eyebrow">Application locale hors ligne</p>
+        <h1>Générateur de charte du bien vivre ensemble</h1>
+        <p class="page-header__intro">
+          Construisez une charte claire, un poster de service et un PDF imprimé directement depuis votre navigateur, sans serveur et sans envoi de données.
+        </p>
+      </div>
+      <div class="page-header__actions">
+        <button type="button" class="secondary-button" id="import-start-button">Importer une charte</button>
+        <button type="button" class="secondary-button" id="reset-button">Réinitialiser le formulaire</button>
+      </div>
+    </header>
+
+    <div id="live-message" class="live-message no-print" role="status" aria-live="polite"></div>
+
+    <main class="workspace">
+      <section class="app-controls no-print" aria-label="Saisie de la charte">
+        <div id="form-errors" class="form-errors" role="alert" aria-live="assertive"></div>
+        <div id="form-warnings" class="form-warnings" aria-live="polite"></div>
+
+        <section class="step-card form-section" id="step-1">
+          <div class="step-card__header">
+            <span class="step-card__number">1</span>
+            <div>
+              <h2>Mise en page du document</h2>
+              <p>Choisissez la palette et la police appliquées aux PDF produits.</p>
+            </div>
+          </div>
+
+          <div class="document-style-panel">
+            <label class="field field--full">
+              <span>Palette graphique du document</span>
+              <select id="palette-select"></select>
+              <small id="palette-description">Choisissez une palette appliquée uniquement au document produit.</small>
+            </label>
+            <label class="field field--full">
+              <span>Police principale du document</span>
+              <select id="font-select">
+                <option value="marianne">Marianne</option>
+                <option value="spectral">Spectral</option>
+              </select>
+              <small>Marianne reste le choix institutionnel par défaut. Spectral donne un rendu plus éditorial.</small>
+            </label>
+            <div id="palette-preview" class="palette-preview" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section class="step-card form-section" id="step-2">
+          <div class="step-card__header">
+            <span class="step-card__number">2</span>
+            <div>
+              <h2>Informations du service</h2>
+              <p>Renseignez les informations d'identification qui apparaîtront dans les documents.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Nom du service <strong>*</strong></span>
+              <input type="text" id="service-name" placeholder="Ex. Service relation usagers" required>
+            </label>
+
+            <label class="field">
+              <span>Date de validation</span>
+              <input type="date" id="validation-date">
+            </label>
+          </div>
+
+          <div class="form-grid form-grid--logo">
+            <label class="field">
+              <span>Logo du service</span>
+              <input type="file" id="service-logo" accept=".png,.jpg,.jpeg,.svg,image/png,image/jpeg,image/svg+xml">
+              <small>Le logo Douanes reste toujours affiché. Ce champ ajoute un logo secondaire de service.</small>
+            </label>
+
+            <div class="logo-summary">
+              <div class="logo-summary__preview">
+                <img id="logo-preview" alt="Aperçu du logo de service importé">
+                <span id="logo-placeholder">Aucun logo de service importé</span>
+              </div>
+              <div class="logo-summary__meta">
+                <p id="logo-filename">Le logo du service apparaîtra à droite du logo Douanes dans la prévisualisation, le PDF et le JSON.</p>
+              </div>
+            </div>
+          </div>
+
+          <label class="field field--full">
+            <span>Phrase d'introduction du contenu</span>
+            <textarea id="intro-text" rows="4" placeholder="Ex. Cette charte décline, pour notre service, les comportements concrets qui rendent le travail collectif plus juste et plus serein."></textarea>
+          </label>
+
+          <label class="field field--full">
+            <span>Phrase finale d'engagement collectif</span>
+            <textarea id="final-engagement" rows="3" placeholder="Ex. Nous nous engageons collectivement à faire vivre ces principes dans nos décisions et nos pratiques quotidiennes."></textarea>
+          </label>
+
+          <label class="toggle-field">
+            <input type="checkbox" id="include-full-definitions">
+            <span>Inclure les définitions complètes dans le PDF A4</span>
+          </label>
+          <p class="toggle-field__hint">
+            Cette option n'agit que sur le document A4. Le poster A3 reste synthétique.
+          </p>
+        </section>
+
+        <section class="step-card form-section" id="step-3">
+          <div class="step-card__header">
+            <span class="step-card__number">3</span>
+            <div>
+              <h2>Choix des valeurs</h2>
+              <p>Sélectionnez exactement 3 valeurs. Le glisser-déposer reste disponible, avec des boutons Ajouter et Retirer.</p>
+            </div>
+          </div>
+
+          <p id="selection-count" class="sr-only" aria-live="polite">0 valeurs sélectionnées sur 3</p>
+
+          <div class="values-board">
+            <section class="drop-zone" data-zone="available" aria-labelledby="available-title">
+              <div class="drop-zone__header">
+                <h3 id="available-title">Valeurs disponibles</h3>
+                <p>9 valeurs chargées au démarrage.</p>
+              </div>
+              <div id="available-values" class="value-list"></div>
+            </section>
+
+            <section class="drop-zone drop-zone--selected" data-zone="selected" aria-labelledby="selected-title">
+              <div class="drop-zone__header">
+                <h3 id="selected-title">Valeurs retenues pour la charte</h3>
+                <p>Les trois valeurs choisies apparaissent dans un format compact.</p>
+              </div>
+              <div id="selected-values" class="value-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="step-card form-section" id="step-4">
+          <div class="step-card__header">
+            <span class="step-card__number">4</span>
+            <div>
+              <h2>Valeurs</h2>
+              <p>Renseignez les règles, gestes ou engagements concrets associés aux trois valeurs.</p>
+            </div>
+          </div>
+
+          <div class="toolbar toolbar--compact">
+            <div class="toolbar__actions">
+              <button type="button" class="secondary-button" id="expand-all-values-button">Tout déplier</button>
+              <button type="button" class="secondary-button" id="collapse-all-values-button">Tout replier</button>
+            </div>
+          </div>
+
+          <div id="value-editors" class="value-editors"></div>
+        </section>
+
+        <section class="step-card form-section" id="step-5">
+          <div class="step-card__header">
+            <span class="step-card__number">5</span>
+            <div>
+              <h2>Engagements</h2>
+              <p>Complétez les engagements communs selon les trois points de vue.</p>
+            </div>
+          </div>
+          <div id="commitment-editors" class="commitment-editors"></div>
+        </section>
+
+        <section class="step-card form-section" id="step-6">
+          <div class="step-card__header">
+            <span class="step-card__number">6</span>
+            <div>
+              <h2>Sauvegardes et export</h2>
+              <p>Le brouillon reste local. L'export de dossier crée automatiquement les fichiers essentiels à partager et à imprimer.</p>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar__actions buttons">
+              <button type="button" class="secondary-button" id="save-draft-button">Sauvegarder</button>
+              <button type="button" class="primary-button" id="export-bundle-button">Exporter le projet ZIP</button>
+              <button type="button" class="secondary-button" id="pdf-a4-button">PDF A4</button>
+              <button type="button" class="secondary-button" id="pdf-a3-button">PDF A3</button>
+            </div>
+          </div>
+          <p class="export-tip no-print">
+            <strong>Export projet :</strong> l'application télécharge un fichier ZIP contenant le JSON d'échange et les versions HTML A4 et A3.
+          </p>
+          <p class="print-tip no-print">
+            <strong>PDF :</strong> l'application télécharge automatiquement le fichier A4 ou A3 demandé dans le dossier de téléchargements du navigateur.
+          </p>
+
+          <div class="license-notice no-print">
+            <h3>Licence et composants tiers</h3>
+            <p>Application Chartes_Douane_Occitanie : outil interne DGDDI, usage réservé aux services des Douanes et Droits indirects, sauf décision de publication par l'administration.</p>
+            <p>Bibliothèques locales : jsPDF et fflate sont distribuées sous licence MIT. Les notices complètes sont conservées dans <code>vendor/licenses/</code>.</p>
+          </div>
+
+          <input type="file" id="import-json-input" accept=".json,application/json" hidden>
+        </section>
+      </section>
+
+      <aside class="preview-panel" aria-label="Prévisualisation de la charte">
+        <div class="preview-panel__header no-print">
+          <h2>Prévisualisation en direct</h2>
+          <p>Aperçu A4 indicatif. Le PDF A3 utilise sa propre mise en page optimisée.</p>
+        </div>
+        <div class="preview-panel__canvas">
+          <article id="charter-preview" class="charte-document format-a4"></article>
+        </div>
+      </aside>
+    </main>
+
+    <div class="floating-nav no-print" aria-label="Acces rapide">
+      <button type="button" class="floating-nav__button" id="jump-to-preview-button">Voir la prévisualisation</button>
+      <button type="button" class="floating-nav__button floating-nav__button--secondary" id="jump-to-form-button">Retour au formulaire</button>
+    </div>
+  </div>
+</body>
+</html>
+
