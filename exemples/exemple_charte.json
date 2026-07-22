@@ -1,10 +1,12 @@
 {
   "applicationVersion": "3.1.0",
   "dateCreation": "2026-07-18T00:00:00.000Z",
+  "versionCharte": "v1",
   "format": "a4",
   "paletteGraphique": "terroir",
   "service": {
     "nom": "BSI Montauban",
+    "version": "v1",
     "dateValidation": "2026-06-29",
     "introduction": "Cette charte décline, pour notre service, les comportements concrets qui rendent le travail collectif plus juste, plus lisible et plus serein.",
     "logo": {
