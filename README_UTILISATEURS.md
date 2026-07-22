@@ -37,7 +37,7 @@ Les bibliothèques locales `jsPDF` et `fflate` sont distribuées sous licence MI
 
 ## Reprendre une charte existante
 
-Le bouton `Importer une charte`, placé en haut de l'écran, permet de rouvrir un fichier JSON exporté précédemment. Les anciennes structures JSON sont converties automatiquement lorsque c'est possible.
+Le bouton `Importer une charte ZIP / JSON`, placé en haut de l'écran, permet de rouvrir un ZIP d'échange ou un fichier JSON exporté précédemment. Les anciennes structures JSON sont converties automatiquement lorsque c'est possible.
 
 ## Étape 1 - Mise en page du document
 
@@ -45,7 +45,9 @@ Choisissez la palette graphique et la police principale. Ces choix s'appliquent 
 
 ## Étape 2 - Informations du service
 
-Renseignez le nom du service, la date de validation, les textes d'introduction et d'engagement, puis ajoutez éventuellement un logo de service. Le logo Douanes est intégré automatiquement aux documents.
+Renseignez le nom du service, la version de la charte, la date de validation, les textes d'introduction et d'engagement, puis ajoutez éventuellement un logo de service. Le logo Douanes est intégré automatiquement aux documents.
+
+La version de la charte sert au nom des fichiers d'échange. Exemple : pour `BSI Millau` et `v2`, le ZIP sera nommé `bsi-millau-v2-projet-charte.zip`.
 
 ## Étape 3 - Choix des valeurs
 
@@ -72,11 +74,13 @@ Dans le schéma global, les trois valeurs choisies sont colorées et les autres 
 
 ## Sauvegarder et exporter
 
-- `Sauvegarder` conserve temporairement le brouillon dans le navigateur avec `localStorage`.
-- `Exporter le projet ZIP` télécharge le JSON d'échange, les versions HTML A4/A3, un manifeste et un guide texte.
+- `Sauvegarder temporairement` conserve le brouillon dans le navigateur avec `localStorage`. Cette sauvegarde sert à reprendre le travail sur le même poste, mais ce n'est pas le fichier à partager.
+- `Exporter le ZIP d'échange` crée un dossier compressé lisible contenant le JSON complet, les versions HTML A4/A3, un manifeste et un guide texte.
 - `PDF A4` et `PDF A3` téléchargent le document demandé.
 
-Une application ouverte en `file://` ne peut pas imposer un dossier de destination dans tous les navigateurs. Les fichiers sont donc enregistrés selon les réglages de téléchargement du navigateur. Activez l'option du navigateur demandant où enregistrer chaque fichier si vous souhaitez choisir le dossier.
+Pour collaborer, partagez le ZIP complet ou le fichier `*-echange.json` contenu dans le ZIP. Le destinataire peut utiliser `Importer une charte ZIP / JSON` pour reprendre la charte, modifier les contenus et exporter une nouvelle version.
+
+Dans Chrome ou Edge, le navigateur peut proposer de choisir l'emplacement du ZIP. Dans Firefox, ou si le sélecteur de fichier n'est pas disponible, le ZIP est placé dans le dossier de téléchargements configuré par le navigateur.
 
 ## Dépannage
 
@@ -106,7 +110,7 @@ Vérifiez que les ressources locales du dossier `data/fonts/` sont présentes. L
 
 ### Un ancien JSON s'importe mal
 
-Réessayez avec le bouton `Importer une charte` en haut de page. Les champs obsolètes sont ignorés et les anciennes structures prises en charge sont migrées automatiquement.
+Réessayez avec le bouton `Importer une charte ZIP / JSON` en haut de page. Les champs obsolètes sont ignorés et les anciennes structures prises en charge sont migrées automatiquement.
 
 ## Checklist de test manuel
 
@@ -123,5 +127,5 @@ Réessayez avec le bouton `Importer une charte` en haut de page. Les champs obso
 11. Télécharger le PDF A3 et vérifier qu'il tient sur une page.
 12. Vérifier que les valeurs non retenues ont la même taille de nom que les valeurs retenues.
 13. Vérifier que les engagements A3 sont répartis sur deux colonnes dans chaque cadre.
-14. Sauvegarder puis exporter le projet ZIP.
+14. Renseigner une version, sauvegarder temporairement puis exporter le ZIP d'échange.
 15. Réimporter le JSON et vérifier la restauration des contenus et de la palette.

@@ -1015,7 +1015,11 @@
       if (!pdf) return;
       const snapshot = window.buildSnapshot();
       const suffix = format === "a4" ? "charte-a4" : `poster-${format}`;
-      window.downloadBlob(`${window.slugify(snapshot.service.nom || "charte")}-${suffix}.pdf`, pdf.output("blob"));
+      const baseName =
+        typeof window.buildExchangeBaseName === "function"
+          ? window.buildExchangeBaseName(snapshot)
+          : window.slugify(snapshot.service.nom || "charte");
+      window.downloadBlob(`${baseName}-${suffix}.pdf`, pdf.output("blob"));
       window.setStatus?.(`PDF ${format.toUpperCase()} généré.`, "success");
     } catch (error) {
       console.error(error);

@@ -355,6 +355,7 @@ const FALLBACK_VALUES = [
 const state = {
   info: {
     serviceName: "",
+    charterVersion: "v1",
     validationDate: "",
     introText: DEFAULT_INTRO,
     finalEngagement: DEFAULT_FINAL_ENGAGEMENT,
@@ -418,6 +419,7 @@ function cacheDom() {
   dom.formErrors = document.getElementById("form-errors");
   dom.formWarnings = document.getElementById("form-warnings");
   dom.serviceName = document.getElementById("service-name");
+  dom.charterVersion = document.getElementById("charter-version");
   dom.validationDate = document.getElementById("validation-date");
   dom.paletteSelect = document.getElementById("palette-select");
   dom.paletteDescription = document.getElementById("palette-description");
@@ -450,6 +452,7 @@ function cacheDom() {
 
 function bindGlobalEvents() {
   dom.serviceName.addEventListener("input", (event) => updateInfo("serviceName", event.target.value));
+  dom.charterVersion.addEventListener("input", (event) => updateInfo("charterVersion", event.target.value));
   dom.validationDate.addEventListener("input", (event) => updateInfo("validationDate", event.target.value));
   dom.introText.addEventListener("input", (event) => updateInfo("introText", event.target.value));
   dom.finalEngagement.addEventListener("input", (event) =>
@@ -793,8 +796,10 @@ function buildFallbackExampleSnapshot() {
     dateCreation: new Date().toISOString(),
     format: "a4",
     paletteGraphique: "terroir",
+    versionCharte: "v1",
     service: {
       nom: "BSI Montauban",
+      version: "v1",
       dateValidation: "2026-06-29",
       introduction: DEFAULT_INTRO,
       logo: {
@@ -831,6 +836,7 @@ function applyImportedData(payload, options = {}) {
   const normalized = normalizeImportedData(payload);
 
   state.info.serviceName = normalized.service.nom;
+  state.info.charterVersion = normalized.service.version;
   state.info.validationDate = normalized.service.dateValidation;
   state.info.introText = normalized.service.introduction || DEFAULT_INTRO;
   state.info.finalEngagement = normalized.phraseFinaleEngagement || DEFAULT_FINAL_ENGAGEMENT;
@@ -875,8 +881,14 @@ function normalizeImportedData(payload) {
   return {
     dateCreation: normalizeText(payload.dateCreation || payload.date_creation || "") || new Date().toISOString(),
     format: normalizeFormat(payload.format),
+    versionCharte: normalizeCharterVersion(
+      payload.versionCharte || payload.version_charte || payload.charterVersion || service.version || "v1"
+    ),
     service: {
       nom: normalizeText(service.nom || payload.nomService || payload.serviceName || ""),
+      version: normalizeCharterVersion(
+        service.version || payload.versionCharte || payload.version_charte || payload.charterVersion || "v1"
+      ),
       unite: normalizeText(service.unite || payload.unite || payload.serviceUnit || ""),
       dateValidation: normalizeText(
         service.dateValidation || payload.dateValidation || payload.validationDate || ""
@@ -1151,6 +1163,7 @@ function normalizeFontChoice(value) {
 
 function syncFormFromState() {
   dom.serviceName.value = state.info.serviceName;
+  dom.charterVersion.value = state.info.charterVersion;
   dom.validationDate.value = state.info.validationDate;
   dom.introText.value = state.info.introText;
   dom.finalEngagement.value = state.info.finalEngagement;
@@ -1708,10 +1721,12 @@ function buildSnapshot() {
   return {
     applicationVersion: APP_VERSION,
     dateCreation: state.createdAt || new Date().toISOString(),
+    versionCharte: normalizeCharterVersion(state.info.charterVersion),
     format: state.format,
     paletteGraphique: state.info.paletteId,
     service: {
       nom: state.info.serviceName.trim(),
+      version: normalizeCharterVersion(state.info.charterVersion),
       dateValidation: state.info.validationDate,
       introduction: state.info.introText.trim() || DEFAULT_INTRO,
       logo: {
@@ -2653,7 +2668,7 @@ async function exportBundle() {
   saveDraft();
 
   const baseSnapshot = JSON.parse(JSON.stringify(snapshot));
-  const baseName = slugify(snapshot.service.nom || "chartes-douane-occitanie");
+  const baseName = buildExchangeBaseName(snapshot);
 
   const exportFiles = [
     {
@@ -2693,9 +2708,17 @@ async function exportBundle() {
       files[`${baseName}/${file.name}`] = encoder.encode(file.content);
     }
     const zipped = window.fflate.zipSync(files, { level: 6 });
-    downloadBlob(`${baseName}-projet-charte.zip`, new Blob([zipped], { type: "application/zip" }));
-    setStatus("Le ZIP du projet a été généré. Il contient le JSON d'échange et les HTML A4 et A3.", "success");
+    await saveBlobWithPicker(
+      `${baseName}-projet-charte.zip`,
+      new Blob([zipped], { type: "application/zip" }),
+      "application/zip"
+    );
+    setStatus("Le ZIP d'échange a été généré. Il contient le JSON complet et les HTML A4 et A3.", "success");
   } catch (error) {
+    if (error?.name === "AbortError") {
+      setStatus("Export ZIP annulé.", "info");
+      return;
+    }
     console.error(error);
     setStatus("Le ZIP d'export n'a pas pu être créé.", "error", true);
   }
@@ -2708,19 +2731,48 @@ async function importJson(event) {
   }
 
   try {
-    const content = await file.text();
-    const payload = JSON.parse(content);
+    const payload = await readImportedCharterPayload(file);
     applyImportedData(payload);
     syncFormFromState();
     applyFormat(state.format);
     renderAll();
     queueAutosave();
-    setStatus("La charte JSON a été importée avec succès.", "success");
+    setStatus("La charte a été importée avec succès.", "success");
   } catch (error) {
-    setStatus("Le fichier JSON n'a pas pu être importé. Vérifiez son contenu.", "error");
+    console.error(error);
+    setStatus("Le fichier ZIP ou JSON n'a pas pu être importé. Vérifiez son contenu.", "error");
   } finally {
     dom.importJsonInput.value = "";
   }
+}
+
+async function readImportedCharterPayload(file) {
+  const lowerName = String(file.name || "").toLowerCase();
+  if (lowerName.endsWith(".zip") || file.type === "application/zip" || file.type === "application/x-zip-compressed") {
+    if (!window.fflate?.unzipSync) {
+      throw new Error("Import ZIP indisponible : fflate n'est pas chargé.");
+    }
+    const archive = window.fflate.unzipSync(new Uint8Array(await file.arrayBuffer()));
+    const decoder = new TextDecoder("utf-8");
+    const jsonPath = findExchangeJsonPath(Object.keys(archive));
+    if (!jsonPath) {
+      throw new Error("Aucun JSON d'échange trouvé dans le ZIP.");
+    }
+    return JSON.parse(decoder.decode(archive[jsonPath]));
+  }
+
+  return JSON.parse(await file.text());
+}
+
+function findExchangeJsonPath(paths) {
+  const jsonPaths = paths.filter((path) => path.toLowerCase().endsWith(".json"));
+  return (
+    jsonPaths.find((path) => /(^|\/)[^/]*-echange\.json$/i.test(path)) ||
+    jsonPaths.find((path) => /(^|\/)charte\.json$/i.test(path)) ||
+    jsonPaths.find((path) => /(^|\/)[^/]*manifest\.json$/i.test(path) === false) ||
+    jsonPaths[0] ||
+    ""
+  );
 }
 
 function exportHtml() {
@@ -2731,7 +2783,7 @@ function exportHtml() {
   }
 
   downloadFile(
-    `${slugify(snapshot.service.nom || "charte")}.html`,
+    `${buildExchangeBaseName(snapshot)}.html`,
     buildStandaloneHtml(snapshot),
     "text/html;charset=utf-8"
   );
@@ -2742,7 +2794,9 @@ function buildExportManifest(snapshot, baseName) {
   return {
     generatedAt: new Date().toISOString(),
     applicationVersion: APP_VERSION,
+    charterVersion: snapshot.versionCharte || snapshot.service.version || "",
     service: snapshot.service.nom || "",
+    exchangeName: `${snapshot.service.nom || "Charte"} ${snapshot.versionCharte || snapshot.service.version || ""}`.trim(),
     palette: snapshot.options.palette_graphique,
     formats: [
       `${baseName}-charte-a4.html`,
@@ -2750,7 +2804,7 @@ function buildExportManifest(snapshot, baseName) {
     ],
     exchangeFile: `${baseName}-echange.json`,
     note:
-      "Les PDF ne peuvent pas être générés automatiquement dans ce dossier depuis une application HTML locale. Ouvrez chaque fichier HTML exporté puis utilisez l'impression du navigateur vers PDF.",
+      "Pour collaborer, partagez le ZIP complet ou le fichier d'échange JSON. L'import accepte les deux formats.",
   };
 }
 
@@ -2759,6 +2813,8 @@ function buildExportInstructions(snapshot, baseName) {
     `Export Chartes_Douane_Occitanie`,
     ``,
     `Service : ${snapshot.service.nom || "Non renseigné"}`,
+    `Version de la charte : ${snapshot.versionCharte || snapshot.service.version || "v1"}`,
+    `Nom d'échange : ${snapshot.service.nom || "Charte"} ${snapshot.versionCharte || snapshot.service.version || "v1"}`,
     `Date de validation : ${snapshot.service.dateValidation ? formatDate(snapshot.service.dateValidation) : "Non renseignée"}`,
     `Palette : ${snapshot.options.palette_graphique || DEFAULT_PALETTE_ID}`,
     ``,
@@ -2775,8 +2831,46 @@ function buildExportInstructions(snapshot, baseName) {
     `4. Désactivez les en-têtes et pieds de page pour un rendu propre.`,
     ``,
     `Important :`,
-    `Une application HTML locale ne peut pas enregistrer automatiquement plusieurs PDF dans un dossier sans bibliothèque PDF dédiée ou automatisation externe du navigateur.`,
+    `Pour collaborer, partagez le ZIP complet ou le fichier ${baseName}-echange.json. L'import accepte les deux.`,
+    `Dans Chrome ou Edge, l'application peut proposer de choisir l'emplacement du ZIP. Dans Firefox, le ZIP est placé dans le dossier de téléchargements configuré par le navigateur.`,
   ].join("\n");
+}
+
+function buildExchangeBaseName(snapshot = buildSnapshot()) {
+  const servicePart = slugify(snapshot.service?.nom || state.info.serviceName || "charte");
+  const versionPart = slugify(snapshot.versionCharte || snapshot.service?.version || state.info.charterVersion || "v1");
+  return [servicePart, versionPart].filter(Boolean).join("-");
+}
+
+function normalizeCharterVersion(value) {
+  const normalized = normalizeText(value || "v1");
+  return normalized || "v1";
+}
+
+async function saveBlobWithPicker(filename, blob, mimeType) {
+  if (typeof window.showSaveFilePicker === "function") {
+    try {
+      const fileHandle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [
+          {
+            description: "Archive ZIP",
+            accept: { [mimeType || "application/zip"]: [".zip"] },
+          },
+        ],
+      });
+      const writable = await fileHandle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return;
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        throw error;
+      }
+      console.warn("Sélecteur de fichier indisponible, téléchargement classique utilisé.", error);
+    }
+  }
+  downloadBlob(filename, blob);
 }
 
 async function writeTextFileToDirectory(directoryHandle, filename, content) {
@@ -3192,6 +3286,7 @@ function resetApplication() {
 
   state.info = {
     serviceName: "",
+    charterVersion: "v1",
     validationDate: "",
     introText: DEFAULT_INTRO,
     finalEngagement: DEFAULT_FINAL_ENGAGEMENT,

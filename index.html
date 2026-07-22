@@ -25,7 +25,7 @@
         </p>
       </div>
       <div class="page-header__actions">
-        <button type="button" class="secondary-button" id="import-start-button">Importer une charte</button>
+        <button type="button" class="secondary-button" id="import-start-button">Importer une charte ZIP / JSON</button>
         <button type="button" class="secondary-button" id="reset-button">Réinitialiser le formulaire</button>
       </div>
     </header>
@@ -77,6 +77,12 @@
             <label class="field">
               <span>Nom du service <strong>*</strong></span>
               <input type="text" id="service-name" placeholder="Ex. Service relation usagers" required>
+            </label>
+
+            <label class="field">
+              <span>Version de la charte</span>
+              <input type="text" id="charter-version" placeholder="Ex. v1, v2, v3" inputmode="text">
+              <small>Cette version sert au nom du fichier d'échange, par exemple <strong>BSI Millau v1</strong>.</small>
             </label>
 
             <label class="field">
@@ -187,20 +193,20 @@
             <span class="step-card__number">6</span>
             <div>
               <h2>Sauvegardes et export</h2>
-              <p>Le brouillon reste local. L'export de dossier crée automatiquement les fichiers essentiels à partager et à imprimer.</p>
+              <p>Le brouillon reste local. Le ZIP d'échange est nommé avec le service et la version pour faciliter le travail collaboratif.</p>
             </div>
           </div>
 
           <div class="toolbar">
             <div class="toolbar__actions buttons">
-              <button type="button" class="secondary-button" id="save-draft-button">Sauvegarder</button>
-              <button type="button" class="primary-button" id="export-bundle-button">Exporter le projet ZIP</button>
+              <button type="button" class="secondary-button" id="save-draft-button">Sauvegarder temporairement</button>
+              <button type="button" class="primary-button" id="export-bundle-button">Exporter le ZIP d'échange</button>
               <button type="button" class="secondary-button" id="pdf-a4-button">PDF A4</button>
               <button type="button" class="secondary-button" id="pdf-a3-button">PDF A3</button>
             </div>
           </div>
           <p class="export-tip no-print">
-            <strong>Export projet :</strong> l'application télécharge un fichier ZIP contenant le JSON d'échange et les versions HTML A4 et A3.
+            <strong>ZIP d'échange :</strong> il contient le JSON complet, les versions HTML A4/A3, un manifeste et une notice. Dans Chrome/Edge, vous pouvez choisir l'emplacement du ZIP ; sinon il est placé dans les téléchargements.
           </p>
           <p class="print-tip no-print">
             <strong>PDF :</strong> l'application télécharge automatiquement le fichier A4 ou A3 demandé dans le dossier de téléchargements du navigateur.
@@ -212,7 +218,7 @@
             <p>Bibliothèques locales : jsPDF et fflate sont distribuées sous licence MIT. Les notices complètes sont conservées dans <code>vendor/licenses/</code>.</p>
           </div>
 
-          <input type="file" id="import-json-input" accept=".json,application/json" hidden>
+          <input type="file" id="import-json-input" accept=".zip,.json,application/zip,application/json" hidden>
         </section>
       </section>
 
