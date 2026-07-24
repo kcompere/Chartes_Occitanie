@@ -243,113 +243,95 @@ const FALLBACK_PALETTES = [
 
 const FALLBACK_VALUES = [
   {
-    id: "solidarite",
-    nom: "Solidarité",
-    definition_complete:
-      "C'est le fondement de l'esprit d'equipe.\n\nLe pole comptabilite de la recette interregionale constitue une equipe : comme dans le domaine du sport, c'est l'esprit qui regne entre les membres de cette equipe qui conditionne son efficacite mais egalement la maniere dont ses membres percoivent le vivre ensemble.\n\nLa solidarite est la base de tout esprit d'equipe et un pilier du bien vivre ensemble au travail. Elle permet de surmonter plus facilement les difficultes, et constitue un des meilleurs moyens de prevenir le sentiment d'isolement.",
-    definition_courte:
-      "La solidarite est le fondement de l'esprit d'equipe : elle aide a surmonter les difficultes et a prevenir l'isolement.",
-    phrases_synthetiques: [
-      "La solidarite fait fonctionner le collectif comme une equipe.",
-      "Elle permet de ne pas laisser un collegue seul face aux difficultes.",
-    ],
+    "id": "solidarite",
+    "nom": "Solidarité",
+    "definition_complete": "C’est le fondement de l’esprit d’équipe.\nLe (nom du service) constitue une équipe : comme dans le domaine du sport, c’est l’esprit qui règne entre les membres de cette équipe qui conditionne son efficacité mais également la manière dont ses membres perçoivent le vivre ensemble.\nLa solidarité est la base de tout esprit d’équipe et un pilier du « bien vivre ensemble au travail ». Elle permet de surmonter plus facilement les difficultés, et constitue un des meilleurs moyens de prévenir le sentiment d’isolement.\n\nExemples de comportements :\n• je me rends disponible pour un collègue qui en a besoin.\n• je me mobilise pour aider un collègue en difficulté.\n• je sais sortir occasionnellement de mon strict domaine de compétence si l’équipe en a besoin.\n• je participe à l’élaboration d’un projet commun au sein de mon équipe.\n• je participe activement au travail collectif au sein de mon service.",
+    "definition_courte": "La solidarité est le fondement de l’esprit d’équipe : elle aide à surmonter les difficultés et à prévenir l’isolement.",
+    "phrases_synthetiques": [
+      "La solidarité fait fonctionner le collectif comme une équipe.",
+      "Elle permet de ne pas laisser un collègue seul face aux difficultés."
+    ]
   },
   {
-    id: "responsabilite",
-    nom: "Responsabilité",
-    definition_complete:
-      "Le fonctionnement harmonieux d'un groupe passe par l'etablissement de relations entre ses membres, fondees sur des droits et des devoirs reciproques, qu'il est de la responsabilite de chacun de respecter.\n\nEtre responsable signifie tout simplement faire ce que l'on doit faire pour que le groupe fonctionne mieux.",
-    definition_courte:
-      "La responsabilite consiste a faire ce que l'on doit faire pour que le groupe fonctionne mieux.",
-    phrases_synthetiques: [
-      "Etre responsable, c'est contribuer concretement au bon fonctionnement du groupe.",
-      "Chacun a des droits et des devoirs reciproques a respecter.",
-    ],
+    "id": "responsabilite",
+    "nom": "Responsabilité",
+    "definition_complete": "Le fonctionnement harmonieux d’un groupe passe par l’établissement de relations entre ses membres, fondées sur des droits et des devoirs réciproques, qu’il est de la responsabilité de chacun de respecter.\nÊtre responsable signifie tout simplement faire ce que l’on doit faire pour que le groupe fonctionne mieux.\n\nExemples de comportements :\n• je sais être autonome dans mon travail et donc je rends compte.\n• je suis force de proposition.\n• je suis constructif.\n• je m’efforce d’être exemplaire.\n• je suis exigeant avec moi-même.\n• j’assume mes responsabilités et sais reconnaître mes erreurs.\n• j’ai conscience que mon travail engage la responsabilité de l’équipe.",
+    "definition_courte": "La responsabilité consiste à faire ce que l’on doit faire pour que le groupe fonctionne mieux.",
+    "phrases_synthetiques": [
+      "Être responsable, c’est contribuer concrètement au bon fonctionnement du groupe.",
+      "Chacun a des droits et des devoirs réciproques à respecter."
+    ]
   },
   {
-    id: "echanges",
-    nom: "Échanges",
-    definition_complete:
-      "D'abord l'ecoute, ensuite l'ecoute, toujours l'ecoute.\n\nLe travail collectif passe par d'innombrables echanges oraux ou ecrits qui sont essentiels pour s'organiser, prendre des decisions, transmettre des directives ou des dossiers.\n\nPour eviter que ces echanges ne debouchent sur des incomprehensions, voire des conflits, il est important qu'ils soient transparents et effectues sur le mode positif du dialogue. C'est-a-dire en s'attachant a ecouter attentivement et a essayer de comprendre l'autre en faisant preuve d'empathie.",
-    definition_courte:
-      "Les echanges reposent d'abord sur l'ecoute, la clarte de l'information et le dialogue positif.",
-    phrases_synthetiques: [
-      "Echanger, c'est d'abord ecouter attentivement.",
-      "Des echanges clairs et positifs previennent les incomprehensions et les conflits.",
-    ],
+    "id": "echanges",
+    "nom": "Échanges",
+    "definition_complete": "D’abord l’écoute, ensuite l’écoute, toujours l’écoute.\nLe travail collectif passe par d’innombrables échanges oraux ou écrits qui sont essentiels pour s’organiser, prendre des décisions, transmettre des directives ou des dossiers.\nPour éviter que ces échanges ne débouchent sur des incompréhensions, voire des conflits, il est important qu’ils soient transparents et effectués sur le mode positif du dialogue. C’est-à-dire en s’attachant à écouter attentivement et à essayer de comprendre l’autre en faisant preuve d’empathie.\n\nExemples de comportements :\n• j’écoute de façon positive et sans préjugés.\n• je partage et/ou fais circuler une information compréhensible au sein de l’équipe.\n• je laisse mon interlocuteur terminer son propos et je laisse un laps de temps avant de prendre la parole.\n• je laisse les autres s’exprimer.\n• je veille à ne pas propager des rumeurs et des commérages.\n• je privilégie l’échange direct au courriel chaque fois que cela est possible.",
+    "definition_courte": "Les échanges reposent d’abord sur l’écoute, la clarté de l’information et le dialogue positif.",
+    "phrases_synthetiques": [
+      "Échanger, c’est d’abord écouter attentivement.",
+      "Des échanges clairs et positifs préviennent les incompréhensions et les conflits."
+    ]
   },
   {
-    id: "equite",
-    nom: "Équité",
-    definition_complete:
-      "Au sein de son travail comme ailleurs, tout individu attend d'etre traite de maniere equitable et de ne pas etre victime d'injustices. Il s'agit d'un droit fondamental. Les inegalites de traitement injustifiees sont sources de divisions, de jalousies, de discordes, qui vont a l'encontre du bien vivre ensemble au travail.\n\nToute difference de traitement doit pouvoir s'expliquer, ne pas reposer sur l'arbitraire, et etre justifiee de maniere explicite.",
-    definition_courte:
-      "L'equite suppose un traitement juste, explicable et non arbitraire des personnes et des situations.",
-    phrases_synthetiques: [
-      "L'equite rend les decisions comprehensibles et acceptables.",
-      "Une difference de traitement doit pouvoir s'expliquer clairement.",
-    ],
+    "id": "equite",
+    "nom": "Équité",
+    "definition_complete": "Au sein de son travail comme ailleurs, tout individu attend d’être traité de manière équitable et de ne pas être victime d’injustices. Il s’agit d’un droit fondamental. Les inégalités de traitement injustifiées sont sources de divisions, de jalousies, de discordes, qui vont à l’encontre du bien vivre ensemble au travail.\nToute différence de traitement doit pouvoir s’expliquer, ne pas reposer sur l’arbitraire, et être justifiée de manière explicite.\n\nExemples de comportements :\n• j’ai le souci de l’égalité de traitement et de considération de mes collègues.\n• je fais ma juste part de travail.\n• tous mes collègues ont la même importance pour moi.",
+    "definition_courte": "L’équité suppose un traitement juste, explicable et non arbitraire des personnes et des situations.",
+    "phrases_synthetiques": [
+      "L’équité rend les décisions compréhensibles et acceptables.",
+      "Une différence de traitement doit pouvoir s’expliquer clairement."
+    ]
   },
   {
-    id: "reconnaissance",
-    nom: "Reconnaissance",
-    definition_complete:
-      "Chacun d'entre nous travaille pour disposer d'un revenu mais chacun egalement souhaite trouver dans ce travail un facteur d'epanouissement. La reconnaissance que l'on recoit pour notre travail est de ce point de vue essentielle : reconnaissance des usagers et de nos divers partenaires bien entendu, mais egalement reconnaissance entre nous... entre collegues, entre services et entre niveaux hierarchiques.\n\nLa reconnaissance que nous nous exprimons mutuellement nous renforce, elle nous permet de nous sentir des individus a part entiere au sein du groupe.",
-    definition_courte:
-      "La reconnaissance mutuelle renforce chacun et permet de se sentir pleinement membre du collectif.",
-    phrases_synthetiques: [
-      "Reconnaître le travail de l'autre renforce le collectif.",
-      "La reconnaissance donne a chacun une place a part entiere dans le groupe.",
-    ],
+    "id": "reconnaissance",
+    "nom": "Reconnaissance",
+    "definition_complete": "Chacun d’entre nous travaille pour disposer d’un revenu mais chacun également souhaite trouver dans ce travail un facteur d’épanouissement. La reconnaissance que l’on reçoit pour notre travail est de ce point de vue essentielle : reconnaissance des usagers et de nos divers partenaires bien entendu, mais également reconnaissance\nentre nous… entre collègues, entre services et entre niveaux hiérarchiques.\nLa reconnaissance que nous nous exprimons mutuellement nous renforce, elle nous permet de nous sentir des individus à part entière au sein du groupe.\n\nExemples de comportements :\n• je valorise le travail d’autrui et je rappelle qu’il en est l’auteur.\n• je remercie les personnes qui ont travaillé pour moi ou pour la communauté de travail.\n• j’échange positivement avec mes collègues sur les résultats de leur travail.",
+    "definition_courte": "La reconnaissance mutuelle renforce chacun et permet de se sentir pleinement membre du collectif.",
+    "phrases_synthetiques": [
+      "Reconnaître le travail de l’autre renforce le collectif.",
+      "La reconnaissance donne à chacun une place à part entière dans le groupe."
+    ]
   },
   {
-    id: "bienveillance",
-    nom: "Bienveillance",
-    definition_complete:
-      "Aborder l'autre de maniere positive.\n\nLa bienveillance prefigure la confiance. C'est elle qui permet de depasser ses prejuges, d'aborder les autres de maniere positive, de leur octroyer la reconnaissance meritee, mais egalement de les interpeller sans les blesser si l'on a besoin de le faire.",
-    definition_courte:
-      "La bienveillance consiste a aborder l'autre positivement, tout en pouvant l'interpeller sans le blesser.",
-    phrases_synthetiques: [
-      "La bienveillance permet d'interpeller sans blesser.",
-      "Elle aide a depasser les prejuges et prepare la confiance.",
-    ],
+    "id": "bienveillance",
+    "nom": "Bienveillance",
+    "definition_complete": "Aborder l’autre de manière positive.\nLa bienveillance préfigure la confiance. C’est elle qui permet de dépasser ses préjugés, d’aborder les autres de manière positive, de leur octroyer la reconnaissance méritée, mais également de les interpeller sans les blesser si l’on a besoin de le faire.\n\nExemples de comportements :\n• j’aborde autrui avec un a priori positif.\n• je suis attentif aux propos et aux points de vue des autres.\n• je suis ouvert pour recevoir un avis que je ne partage pas.\n• je suis indulgent avec les erreurs et les maladresses de mes collègues.",
+    "definition_courte": "La bienveillance consiste à aborder l’autre positivement, tout en pouvant l’interpeller sans le blesser.",
+    "phrases_synthetiques": [
+      "La bienveillance permet d’interpeller sans blesser.",
+      "Elle aide à dépasser les préjugés et prépare la confiance."
+    ]
   },
   {
-    id: "confiance",
-    nom: "Confiance",
-    definition_complete:
-      "C'est la base de relations humaines durablement harmonieuses.\n\nIl s'agit d'une evidence, sans confiance le vivre ensemble est difficile et le vivre ensemble au travail n'echappe pas a cette regle. C'est grace a la confiance que des relations humaines harmonieuses peuvent durablement s'etablir. Elle est la base d'une meilleure serenite, et sans elle l'incertitude et l'anxiete s'installent.\n\nLa confiance ne se decrete pas, elle se gagne chaque jour par l'exemplarite des attitudes et des comportements.",
-    definition_courte:
-      "La confiance est la base de relations durables et sereines ; elle se gagne par l'exemplarite des comportements.",
-    phrases_synthetiques: [
-      "La confiance ne se decrete pas, elle se gagne chaque jour.",
-      "Elle reduit l'incertitude et rend le travail collectif plus serein.",
-    ],
+    "id": "confiance",
+    "nom": "Confiance",
+    "definition_complete": "C’est la base de relations humaines durablement harmonieuses.\nIl s’agit d’une évidence, sans confiance le vivre ensemble est difficile et le vivre ensemble au travail n’échappe pas à cette règle. C’est grâce à la confiance que des relations humaines harmonieuses peuvent durablement s’établir. Elle est la base d’une meilleure sérénité, et sans elle l’incertitude et l’anxiété s’installent. La confiance ne se décrète pas, elle se gagne chaque jour par l’exemplarité des attitudes et des comportements.\n\nExemples de comportements :\n• je ne trahis pas mes engagements.\n• je respecte les demandes qui me sont faites.\n• je m’applique à ce que mes éventuelles défaillances restent exceptionnelles.\n• je ne manipule pas mon interlocuteur.\n• j’accorde ma confiance à mes collègues et je m’attache à mériter la leur.",
+    "definition_courte": "La confiance est la base de relations durables et sereines ; elle se gagne par l’exemplarité des comportements.",
+    "phrases_synthetiques": [
+      "La confiance ne se décrète pas, elle se gagne chaque jour.",
+      "Elle réduit l’incertitude et rend le travail collectif plus serein."
+    ]
   },
   {
-    id: "respect",
-    nom: "Respect",
-    definition_complete:
-      "C'est le cadre dans lequel s'exerce la liberte de chacun.\n\nIl est le socle du bien vivre ensemble au travail. Sans respect, ni la confiance, ni la solidarite, ni la convivialite ne sont possibles. Respect des individus en premier lieu, mais egalement respect des locaux et du materiel et plus globalement respect des regles et des usages en vigueur.",
-    definition_courte:
-      "Le respect est le socle du bien vivre ensemble : il rend possible la confiance, la solidarité et la convivialité.",
-    phrases_synthetiques: [
-      "Le respect est le cadre de la liberte de chacun.",
-      "Sans respect, le bien vivre ensemble ne peut pas tenir.",
-    ],
+    "id": "respect",
+    "nom": "Respect",
+    "definition_complete": "C’est le cadre dans lequel s’exerce la liberté de chacun.\nIl est le socle du bien vivre ensemble au travail. Sans respect, ni la confiance, ni la solidarité, ni la convivialité ne sont possibles. Respect des individus en premier lieu, mais également respect des locaux et du matériel et plus globalement respect des règles et des usages en vigueur.\n\nExemples de comportements :\n• je fais preuve de politesse et de savoir vivre.\n• je prends le temps de saluer mes collègues.\n• je dis bonjour aux personnes que je croise.\n• je m’adresse aux autres avec courtoisie.\n• j’applique les règles qui régissent le fonctionnement collectif et mets en œuvre les usages.\n• je suis respectueux des règles de politesse.",
+    "definition_courte": "Le respect est le socle du bien vivre ensemble : il rend possible la confiance, la solidarité et la convivialité.",
+    "phrases_synthetiques": [
+      "Le respect est le cadre de la liberté de chacun.",
+      "Sans respect, le bien vivre ensemble ne peut pas tenir."
+    ]
   },
   {
-    id: "convivialite",
-    nom: "Convivialité",
-    definition_complete:
-      "Lieu de travail, la recette interregionale est le lieu de relations professionnelles mais egalement le lieu de simples relations humaines entre collegues.\n\nPrendre le temps de passer ensemble des moments de convivialite est une des facons de se connaitre mieux, de modifier ses eventuels prejuges, de partager sa bonne humeur et, ce faisant, d'etre dans le bien vivre ensemble au travail.",
-    definition_courte:
-      "La convivialite permet de mieux se connaitre, de partager des moments humains et de soutenir le bien vivre ensemble.",
-    phrases_synthetiques: [
-      "La convivialite nourrit les relations humaines au travail.",
-      "Prendre du temps ensemble aide a mieux se connaitre et a depasser les prejuges.",
-    ],
-  },
+    "id": "convivialite",
+    "nom": "Convivialité",
+    "definition_complete": "Lieu de travail, (nom du service) est le lieu de relations professionnelles mais également le lieu de « simples » relations humaines entre collègues.\nPrendre le temps de passer ensemble des moments de convivialité est une des façons de se connaître mieux, de modifier ses éventuels préjugés, de partager sa bonne humeur et, ce faisant, d’être dans le bien vivre ensemble au travail.\n\nExemples de comportements :\n• je vais vers les autres.\n• je prends du temps pour mes collègues.\n• je sais demander des nouvelles de mes collègues.\n• je m’intéresse à mes collègues sans faire preuve d’indiscrétion.\n• je participe aux moments de convivialité.\n• j’organise des moments de convivialité.",
+    "definition_courte": "La convivialité permet de mieux se connaître, de partager des moments humains et de soutenir le bien vivre ensemble.",
+    "phrases_synthetiques": [
+      "La convivialité nourrit les relations humaines au travail.",
+      "Prendre du temps ensemble aide à mieux se connaître et à dépasser les préjugés."
+    ]
+  }
 ];
 
 const state = {
@@ -1242,7 +1224,7 @@ function renderValueList(container, values, zone) {
             <details>
               <summary>Voir le détail</summary>
               <p>${escapeHtml(value.definition_courte)}</p>
-              <p>${escapeHtml(value.definition_complete)}</p>
+              ${buildCompleteDefinitionMarkup(personalizeCompleteDefinition(value, buildSnapshot().service))}
             </details>
           </div>
           <button type="button" class="secondary-button" data-value-action="${zone === "selected" ? "remove" : "add"}" data-value-id="${escapeAttribute(value.id)}">
@@ -1500,7 +1482,7 @@ function renderExpandedEditorBody(valueId, value, entry) {
     <div class="editor-card__body">
       <details class="value-card__details" style="margin-top: 12px;">
         <summary>Référence complète</summary>
-        <p>${escapeHtml(value.definition_complete)}</p>
+        ${buildCompleteDefinitionMarkup(personalizeCompleteDefinition(value, buildSnapshot().service))}
       </details>
       ${renderValueItemSectionEditor(valueId, entry)}
     </div>
@@ -1890,9 +1872,9 @@ function buildA4ValueMarkup(value, index, includeFullDefinitions, service) {
       </div>
       ${
         includeFullDefinitions
-          ? `<div class="charte-definition-complete"><h3>Définition complète</h3><p>${escapeHtml(
+          ? `<div class="charte-definition-complete"><h3>Définition complète</h3>${buildCompleteDefinitionMarkup(
               completeDefinition
-            )}</p></div>`
+            )}</div>`
           : ""
       }
       ${
@@ -1906,20 +1888,43 @@ function buildA4ValueMarkup(value, index, includeFullDefinitions, service) {
 
 function personalizeCompleteDefinition(value, service) {
   const definition = value.definition_complete || "";
-  if (value.id !== "solidarite") {
-    return definition;
-  }
-
   const serviceName = normalizeText(service?.nom || "");
+  const personalized = definition.replace(/\(nom du service\)/gi, serviceName || "(nom du service)");
   if (!serviceName) {
-    return definition;
+    return personalized;
   }
 
-  return definition
+  return personalized
     .replace(/Le p[oô]le comptabilit[eé] de la recette interr[eé]gionale/gi, `Le service ${serviceName}`)
     .replace(/Le pole comptabilite de la recette interregionale/gi, `Le service ${serviceName}`)
     .replace(/la recette interr[eé]gionale/gi, `le service ${serviceName}`)
     .replace(/la recette interregionale/gi, `le service ${serviceName}`);
+}
+
+function buildCompleteDefinitionMarkup(definition) {
+  const blocks = String(definition || "")
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  return blocks
+    .map((block) => {
+      const lines = block.split(/\n/).map((line) => line.trim()).filter(Boolean);
+      const bulletLines = lines.filter((line) => /^[•*-]\s+/.test(line));
+      if (bulletLines.length === lines.length) {
+        return `<ul>${bulletLines
+          .map((line) => `<li>${escapeHtml(line.replace(/^[•*-]\s+/, ""))}</li>`)
+          .join("")}</ul>`;
+      }
+      if (bulletLines.length) {
+        const introLines = lines.filter((line) => !/^[•*-]\s+/.test(line));
+        return `${introLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}<ul>${bulletLines
+          .map((line) => `<li>${escapeHtml(line.replace(/^[•*-]\s+/, ""))}</li>`)
+          .join("")}</ul>`;
+      }
+      return `<p>${escapeHtml(block)}</p>`;
+    })
+    .join("");
 }
 
 function buildPosterMarkup(snapshot) {
@@ -3175,6 +3180,9 @@ body { margin: 0; padding: 24px; background: #f3f4f6; color: #173046; font-famil
 .charte-definition-complete h3,
 .behavior-block h3 { margin: 0 0 3mm; font-size: 11.5pt; line-height: 1.2; }
 .charte-definition-complete p { margin: 0; font-size: 10pt; line-height: 1.45; white-space: pre-line; }
+.charte-definition-complete p + p, .charte-definition-complete p + ul, .charte-definition-complete ul + p { margin-top: 2.5mm; }
+.charte-definition-complete ul { margin: 2.5mm 0 0; padding-left: 5mm; line-height: 1.45; }
+.charte-definition-complete li { margin-top: 1mm; }
 .value-action-list { margin-top: 0; padding: 5mm; border-radius: 10px; background: var(--doc-soft-bg); border: 1px solid var(--doc-border); }
 .value-action-list h3 { margin: 0 0 3mm; font-size: 12pt; }
 .charte-list { margin: 0; padding: 0; list-style: none; }

@@ -1854,11 +1854,35 @@ details summary:focus {
   line-height: 1.2;
 }
 
-.charte-definition-complete p {
+.charte-definition-complete p,
+.value-card__details p {
   margin: 0;
   font-size: 10pt;
   line-height: 1.45;
   white-space: pre-line;
+}
+
+.charte-definition-complete p + p,
+.charte-definition-complete p + ul,
+.charte-definition-complete ul + p,
+.value-card__details p + p,
+.value-card__details p + ul,
+.value-card__details ul + p {
+  margin-top: 2.5mm;
+}
+
+.charte-definition-complete ul,
+.value-card__details ul,
+.value-row-option details ul {
+  margin: 2.5mm 0 0;
+  padding-left: 5mm;
+  line-height: 1.45;
+}
+
+.charte-definition-complete li,
+.value-card__details li,
+.value-row-option details li {
+  margin-top: 1mm;
 }
 
 .charte-synthetic-pill {

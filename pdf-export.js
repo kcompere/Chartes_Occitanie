@@ -466,9 +466,10 @@
   function getA4ValueCardMetrics(pdf, model, value) {
     const definitionHeight = Math.max(10, measureTextHeight(pdf, value.definition_courte, 150, 12, 1.2));
     const headerHeight = Math.max(29, definitionHeight + 18);
-    const includeComplete = model.snapshot.options?.inclure_definitions_completes && value.definition_complete;
+    const completeDefinition = personalizeCompleteDefinitionForPdf(value, model.snapshot.service);
+    const includeComplete = model.snapshot.options?.inclure_definitions_completes && completeDefinition;
     const completeHeight = includeComplete
-      ? measureTextHeight(pdf, value.definition_complete, 170, 12, 1.2) + 14
+      ? measureTextHeight(pdf, completeDefinition, 170, 12, 1.2) + 14
       : 0;
     const items = value.items || [];
     const split = Math.ceil(items.length / 2);
@@ -517,12 +518,13 @@
     });
 
     let y = box.y + 7 + metrics.headerHeight;
+    const completeDefinition = personalizeCompleteDefinitionForPdf(value, model.snapshot.service);
     if (metrics.completeHeight) {
       pdf.setFillColor(theme.background);
       pdf.roundedRect(box.x + 9, y, box.width - 18, metrics.completeHeight - 4, 2, 2, "F");
       drawText(pdf, { text: "Définition complète", x: box.x + 14, y: y + 3, width: box.width - 28, size: 12, color, style: "bold" });
       drawText(pdf, {
-        text: value.definition_complete,
+        text: completeDefinition,
         x: box.x + 14,
         y: y + 11,
         width: box.width - 28,
@@ -556,6 +558,18 @@
         gap: 1.4,
       });
     });
+  }
+
+  function personalizeCompleteDefinitionForPdf(value, service) {
+    const definition = String(value.definition_complete || "");
+    const serviceName = String(service?.nom || "").trim();
+    const personalized = definition.replace(/\(nom du service\)/gi, serviceName || "(nom du service)");
+    if (!serviceName) return personalized;
+    return personalized
+      .replace(/Le p[oô]le comptabilit[eé] de la recette interr[eé]gionale/gi, `Le service ${serviceName}`)
+      .replace(/Le pole comptabilite de la recette interregionale/gi, `Le service ${serviceName}`)
+      .replace(/la recette interr[eé]gionale/gi, `le service ${serviceName}`)
+      .replace(/la recette interregionale/gi, `le service ${serviceName}`);
   }
 
   async function generateA4Pdf(model) {
