@@ -245,7 +245,7 @@ const FALLBACK_VALUES = [
   {
     "id": "solidarite",
     "nom": "Solidarité",
-    "definition_complete": "C’est le fondement de l’esprit d’équipe.\nLe (nom du service) constitue une équipe : comme dans le domaine du sport, c’est l’esprit qui règne entre les membres de cette équipe qui conditionne son efficacité mais également la manière dont ses membres perçoivent le vivre ensemble.\nLa solidarité est la base de tout esprit d’équipe et un pilier du « bien vivre ensemble au travail ». Elle permet de surmonter plus facilement les difficultés, et constitue un des meilleurs moyens de prévenir le sentiment d’isolement.\n\nExemples de comportements :\n• je me rends disponible pour un collègue qui en a besoin.\n• je me mobilise pour aider un collègue en difficulté.\n• je sais sortir occasionnellement de mon strict domaine de compétence si l’équipe en a besoin.\n• je participe à l’élaboration d’un projet commun au sein de mon équipe.\n• je participe activement au travail collectif au sein de mon service.",
+    "definition_complete": "C’est le fondement de l’esprit d’équipe.\nDans le service, chacun contribue au collectif : comme dans le domaine du sport, l’esprit qui unit les membres de l’équipe conditionne à la fois son efficacité et la manière dont chacun vit le travail commun.\nLa solidarité permet de surmonter plus facilement les difficultés et constitue un des meilleurs moyens de prévenir le sentiment d’isolement. Elle est un pilier du bien vivre ensemble au travail.\n\nExemples de comportements :\n• je me rends disponible pour un collègue qui en a besoin.\n• je me mobilise pour aider un collègue en difficulté.\n• je sais sortir occasionnellement de mon strict domaine de compétence si l’équipe en a besoin.\n• je participe à l’élaboration d’un projet commun au sein de mon équipe.\n• je participe activement au travail collectif au sein de mon service.",
     "definition_courte": "La solidarité est le fondement de l’esprit d’équipe : elle aide à surmonter les difficultés et à prévenir l’isolement.",
     "phrases_synthetiques": [
       "La solidarité fait fonctionner le collectif comme une équipe.",
@@ -325,7 +325,7 @@ const FALLBACK_VALUES = [
   {
     "id": "convivialite",
     "nom": "Convivialité",
-    "definition_complete": "Lieu de travail, (nom du service) est le lieu de relations professionnelles mais également le lieu de « simples » relations humaines entre collègues.\nPrendre le temps de passer ensemble des moments de convivialité est une des façons de se connaître mieux, de modifier ses éventuels préjugés, de partager sa bonne humeur et, ce faisant, d’être dans le bien vivre ensemble au travail.\n\nExemples de comportements :\n• je vais vers les autres.\n• je prends du temps pour mes collègues.\n• je sais demander des nouvelles de mes collègues.\n• je m’intéresse à mes collègues sans faire preuve d’indiscrétion.\n• je participe aux moments de convivialité.\n• j’organise des moments de convivialité.",
+    "definition_complete": "Le service est d’abord un lieu de travail, mais aussi un espace de relations humaines entre collègues.\nLes temps de convivialité permettent de mieux se connaître, de dépasser certains préjugés, de partager une bonne humeur utile au collectif et de soutenir le bien vivre ensemble au travail.\n\nExemples de comportements :\n• je vais vers les autres.\n• je prends du temps pour mes collègues.\n• je sais demander des nouvelles de mes collègues.\n• je m’intéresse à mes collègues sans faire preuve d’indiscrétion.\n• je participe aux moments de convivialité.\n• j’organise des moments de convivialité.",
     "definition_courte": "La convivialité permet de mieux se connaître, de partager des moments humains et de soutenir le bien vivre ensemble.",
     "phrases_synthetiques": [
       "La convivialité nourrit les relations humaines au travail.",
@@ -1888,17 +1888,12 @@ function buildA4ValueMarkup(value, index, includeFullDefinitions, service) {
 
 function personalizeCompleteDefinition(value, service) {
   const definition = value.definition_complete || "";
-  const serviceName = normalizeText(service?.nom || "");
-  const personalized = definition.replace(/\(nom du service\)/gi, serviceName || "(nom du service)");
-  if (!serviceName) {
-    return personalized;
-  }
-
-  return personalized
-    .replace(/Le p[oô]le comptabilit[eé] de la recette interr[eé]gionale/gi, `Le service ${serviceName}`)
-    .replace(/Le pole comptabilite de la recette interregionale/gi, `Le service ${serviceName}`)
-    .replace(/la recette interr[eé]gionale/gi, `le service ${serviceName}`)
-    .replace(/la recette interregionale/gi, `le service ${serviceName}`);
+  return definition
+    .replace(/\(nom du service\)/gi, "le service")
+    .replace(/Le p[oô]le comptabilit[eé] de la recette interr[eé]gionale/gi, "Le service")
+    .replace(/Le pole comptabilite de la recette interregionale/gi, "Le service")
+    .replace(/la recette interr[eé]gionale/gi, "le service")
+    .replace(/la recette interregionale/gi, "le service");
 }
 
 function buildCompleteDefinitionMarkup(definition) {
