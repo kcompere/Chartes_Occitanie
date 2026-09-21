@@ -1,4 +1,4 @@
-const APP_VERSION = "3.1.0";
+const APP_VERSION = "3.2.0";
 const STORAGE_KEY = "chartes-douane-occitanie-brouillon-v3";
 const LEGACY_STORAGE_KEYS = [
   "charte-bien-vivre-brouillon-v3",
@@ -43,12 +43,6 @@ const SVG_VALUE_IDS = [
   "convivialite",
 ];
 
-function sortValuesBySchemaOrder(values) {
-  const order = new Map(SVG_VALUE_IDS.map((valueId, index) => [valueId, index]));
-  return [...(values || [])].sort(
-    (left, right) => (order.get(left.id) ?? Number.MAX_SAFE_INTEGER) - (order.get(right.id) ?? Number.MAX_SAFE_INTEGER)
-  );
-}
 const FORMAT_RULES = {
   a4: "@page { size: A4 portrait; margin: 14mm; }",
   a3: "@page { size: A3 landscape; margin: 12mm; }",
@@ -779,6 +773,7 @@ function buildFallbackExampleSnapshot() {
     format: "a4",
     paletteGraphique: "terroir",
     versionCharte: "v1",
+    ordreValeursRetenues: [...selectedIds],
     service: {
       nom: "BSI Montauban",
       version: "v1",
@@ -858,7 +853,18 @@ function normalizeImportedData(payload) {
     ? payload.valuesRetenues
     : Array.isArray(payload.values_retenues)
     ? payload.values_retenues
+    : Array.isArray(payload.selectedValues)
+    ? payload.selectedValues
     : [];
+  const importedValues = valuesInput.map(normalizeImportedValue).filter((value) => value.id);
+  const valueOrderInput =
+    payload.ordreValeursRetenues ||
+    payload.ordre_valeurs_retenues ||
+    payload.valueOrder ||
+    payload.value_order ||
+    options.ordre_valeurs_retenues ||
+    options.valueOrder ||
+    [];
 
   return {
     dateCreation: normalizeText(payload.dateCreation || payload.date_creation || "") || new Date().toISOString(),
@@ -901,12 +907,35 @@ function normalizeImportedData(payload) {
     phraseFinaleEngagement: normalizeText(
       payload.phraseFinaleEngagement || payload.finalEngagement || DEFAULT_FINAL_ENGAGEMENT
     ),
-    valuesRetenues: valuesInput.map(normalizeImportedValue).filter((value) => value.id),
+    ordreValeursRetenues: normalizeValueOrderIds(valueOrderInput),
+    valuesRetenues: applyImportedValueOrder(importedValues, valueOrderInput),
     engagements: normalizeCommitments(payload.engagements || payload.commitments || {}),
   };
 }
 
 function normalizeImportedValue(value) {
+  if (typeof value === "string") {
+    const id = normalizeText(value);
+    const catalogValue = getValueById(id) || {};
+    return {
+      id,
+      nom: normalizeText(catalogValue.nom || id),
+      definition_complete: normalizeText(catalogValue.definition_complete || ""),
+      definition_courte: normalizeText(catalogValue.definition_courte || ""),
+      phrases_synthetiques: normalizeStringList(catalogValue.phrases_synthetiques || []),
+      items: [],
+      comportements: {
+        on_fait: [],
+        on_evite: [],
+        quand_ca_derape_on_repare: [],
+        attentes_organisation_encadrement: [],
+      },
+    };
+  }
+  if (!value || typeof value !== "object") {
+    return { id: "", items: [], comportements: {} };
+  }
+
   const definitions = normalizeDefinitions(value);
   const behaviorSource = value.comportements;
   const onFait = normalizeBehaviorItems(
@@ -953,6 +982,40 @@ function normalizeImportedValue(value) {
       attentes_organisation_encadrement: attentes,
     },
   };
+}
+
+function applyImportedValueOrder(values, orderInput) {
+  const orderIds = normalizeValueOrderIds(orderInput);
+  if (!orderIds.length) {
+    return values;
+  }
+
+  const valuesById = new Map(values.map((value) => [value.id, value]));
+  const orderedValues = orderIds.map((valueId) => valuesById.get(valueId)).filter(Boolean);
+  const orderedIds = new Set(orderedValues.map((value) => value.id));
+  return [
+    ...orderedValues,
+    ...values.filter((value) => !orderedIds.has(value.id)),
+  ];
+}
+
+function normalizeValueOrderIds(input) {
+  const rawItems = Array.isArray(input)
+    ? input
+    : typeof input === "string" && normalizeText(input)
+    ? String(input).split(/[,\s;]+/)
+    : [];
+  const seenIds = new Set();
+
+  return rawItems
+    .map((item) => normalizeText(typeof item === "string" ? item : item?.id || item?.value || item))
+    .filter((valueId) => {
+      if (!valueId || seenIds.has(valueId)) {
+        return false;
+      }
+      seenIds.add(valueId);
+      return true;
+    });
 }
 
 function normalizeDefinitions(value) {
@@ -1216,9 +1279,21 @@ function renderValueList(container, values, zone) {
 
   container.classList.add("value-list--table");
   container.innerHTML = values
-    .map(
-      (value, index) => `
-        <article class="value-row-option" draggable="true" data-value-id="${escapeAttribute(value.id)}" data-zone="${zone}" data-index="${index}">
+    .map((value, index) => {
+      const isSelected = zone === "selected";
+      const orderControls = isSelected
+        ? `
+          <span class="value-order-badge" aria-label="Position ${index + 1}">${index + 1}</span>
+          <div class="value-order-controls" role="group" aria-label="Modifier l'ordre de ${escapeAttribute(value.nom)}">
+            <button type="button" class="secondary-button value-order-button" data-value-action="move-up" data-value-id="${escapeAttribute(value.id)}" ${index === 0 ? "disabled" : ""}>Haut</button>
+            <button type="button" class="secondary-button value-order-button" data-value-action="move-down" data-value-id="${escapeAttribute(value.id)}" ${index === values.length - 1 ? "disabled" : ""}>Bas</button>
+          </div>
+        `
+        : "";
+
+      return `
+        <article class="value-row-option${isSelected ? " value-row-option--selected" : ""}" draggable="true" data-value-id="${escapeAttribute(value.id)}" data-zone="${zone}" data-index="${index}">
+          ${orderControls}
           <div class="value-row-option__main">
             <strong>${escapeHtml(value.nom)}</strong>
             <details>
@@ -1227,12 +1302,14 @@ function renderValueList(container, values, zone) {
               ${buildCompleteDefinitionMarkup(personalizeCompleteDefinition(value, buildSnapshot().service))}
             </details>
           </div>
-          <button type="button" class="secondary-button" data-value-action="${zone === "selected" ? "remove" : "add"}" data-value-id="${escapeAttribute(value.id)}">
-            ${zone === "selected" ? "Retirer" : "Ajouter"}
-          </button>
+          <div class="value-row-option__actions">
+            <button type="button" class="secondary-button" data-value-action="${isSelected ? "remove" : "add"}" data-value-id="${escapeAttribute(value.id)}">
+              ${isSelected ? "Retirer" : "Ajouter"}
+            </button>
+          </div>
         </article>
-      `
-    )
+      `;
+    })
     .join("");
   container.querySelectorAll(".value-row-option").forEach((row) => {
     row.addEventListener("dragstart", handleCardDragStart);
@@ -1243,7 +1320,12 @@ function renderValueList(container, values, zone) {
   });
   container.querySelectorAll("[data-value-action]").forEach((button) => {
     button.addEventListener("click", () => {
+      if (button.disabled) {
+        return;
+      }
       if (button.dataset.valueAction === "remove") removeSelectedValue(button.dataset.valueId);
+      else if (button.dataset.valueAction === "move-up") moveSelectedValue(button.dataset.valueId, -1);
+      else if (button.dataset.valueAction === "move-down") moveSelectedValue(button.dataset.valueId, 1);
       else addSelectedValue(button.dataset.valueId);
     });
   });
@@ -1468,6 +1550,8 @@ function renderValueEditors() {
         </div>
         <div class="editor-card__actions">
           <span class="editor-card__badge">${index + 1}</span>
+          <button type="button" class="secondary-button value-order-button" data-move-value="up" data-value-id="${escapeAttribute(valueId)}" ${index === 0 ? "disabled" : ""}>Monter</button>
+          <button type="button" class="secondary-button value-order-button" data-move-value="down" data-value-id="${escapeAttribute(valueId)}" ${index === state.selectedValues.length - 1 ? "disabled" : ""}>Descendre</button>
           <button type="button" class="secondary-button" data-toggle-value="${valueId}">${expanded ? "Replier" : "Deplier"}</button>
         </div>
       </div>
@@ -1506,6 +1590,14 @@ function renderValueItemSectionEditor(valueId, entry) {
 }
 
 function handleValueEditorClick(event) {
+  const moveButton = event.target.closest("[data-move-value]");
+  if (moveButton) {
+    if (!moveButton.disabled) {
+      moveSelectedValue(moveButton.dataset.valueId, moveButton.dataset.moveValue === "up" ? -1 : 1);
+    }
+    return;
+  }
+
   const toggleButton = event.target.closest("[data-toggle-value]");
   if (toggleButton) {
     const valueId = toggleButton.dataset.toggleValue;
@@ -1706,6 +1798,7 @@ function buildSnapshot() {
     versionCharte: normalizeCharterVersion(state.info.charterVersion),
     format: state.format,
     paletteGraphique: state.info.paletteId,
+    ordreValeursRetenues: [...state.selectedValues],
     service: {
       nom: state.info.serviceName.trim(),
       version: normalizeCharterVersion(state.info.charterVersion),
@@ -1947,7 +2040,7 @@ function buildPosterMarkup(snapshot) {
 }
 
 function buildA3PosterMarkup(snapshot) {
-  const orderedValues = sortValuesBySchemaOrder(snapshot.valuesRetenues);
+  const orderedValues = snapshot.valuesRetenues;
   const valuesMarkup = orderedValues.length
     ? orderedValues.map((value, index) => buildA3ValueMarkup(value, index)).join("")
     : '<div class="charte-document__empty">Sélectionnez 3 valeurs puis renseignez au moins une ligne pour chaque valeur.</div>';
@@ -2092,7 +2185,7 @@ function buildGlobalValuesSvgMarkup(snapshot) {
     const activeColors = [palette.primary, palette.secondary, palette.accent].filter(Boolean);
     const mutedColor = palette.mutedText || "#9AA0A6";
     const selectedById = new Map(
-      sortValuesBySchemaOrder(snapshot.valuesRetenues).map((value, index) => [value.id, { value, index }])
+      snapshot.valuesRetenues.map((value, index) => [value.id, { value, index }])
     );
     const isA3Schema = snapshot.format === "a3";
     const valueById = new Map([
@@ -2127,12 +2220,10 @@ function buildGlobalValuesSvgMarkup(snapshot) {
         group.removeAttribute("data-selection-index");
       }
 
-      updateSvgValueTexts(svgDocument, group, valueId, value, Boolean(selected), isA3Schema);
+      updateSvgValueTexts(svgDocument, group, valueId, value, selected?.index, isA3Schema);
     });
 
-    if (snapshot.format !== "a4") {
-      reflowSvgValueRows(svg, selectedById, snapshot.format);
-    }
+    reflowSvgValueRows(svg, selectedById, snapshot.format);
     appendSchemaStyle(svgDocument, svg, isA3Schema);
     return new XMLSerializer().serializeToString(svg);
   } catch (error) {
@@ -2144,7 +2235,8 @@ function buildGlobalValuesSvgMarkup(snapshot) {
 function reflowSvgValueRows(svg, selectedById, format) {
   const isA3 = format === "a3";
   const mutedRowHeight = isA3 ? 54 : 72;
-  const rowHeights = SVG_VALUE_IDS.map((valueId) => {
+  const visualValueIds = getOrderedSvgValueIds(selectedById);
+  const rowHeights = visualValueIds.map((valueId) => {
     if (!selectedById.has(valueId)) {
       return mutedRowHeight;
     }
@@ -2186,7 +2278,7 @@ function reflowSvgValueRows(svg, selectedById, format) {
     logoImage.setAttribute("height", String(logoSize));
   }
 
-  SVG_VALUE_IDS.forEach((valueId, index) => {
+  visualValueIds.forEach((valueId, index) => {
     const group = findSvgElement(svg, `valeur-${valueId}`);
     if (!group) {
       cursor += rowHeights[index];
@@ -2247,6 +2339,15 @@ function reflowSvgValueRows(svg, selectedById, format) {
 
     cursor += rowHeights[index];
   });
+}
+
+function getOrderedSvgValueIds(selectedById) {
+  const selectedIds = Array.from(selectedById.keys()).filter((valueId) => SVG_VALUE_IDS.includes(valueId));
+  const selectedSet = new Set(selectedIds);
+  return [
+    ...selectedIds,
+    ...SVG_VALUE_IDS.filter((valueId) => !selectedSet.has(valueId)),
+  ];
 }
 
 function getSvgSelectedPhraseLineCount(value) {
@@ -2365,15 +2466,18 @@ function applySvgIconColor(group, valueId, color) {
   });
 }
 
-function updateSvgValueTexts(svgDocument, group, valueId, value, isSelected, isA3Schema) {
+function updateSvgValueTexts(svgDocument, group, valueId, value, selectionIndex, isA3Schema) {
+  const isSelected = typeof selectionIndex === "number";
   const titleElement = findSvgElement(group, `nom-${valueId}`);
   if (titleElement) {
-    titleElement.textContent = normalizeText(value.nom || valueId).toUpperCase();
+    const title = normalizeText(value.nom || valueId).toUpperCase();
+    titleElement.textContent = isSelected ? `${selectionIndex + 1}. ${title}` : title;
   }
 
   const groupTitle = group.querySelector("title");
   if (groupTitle) {
-    groupTitle.textContent = normalizeText(value.nom || valueId);
+    const title = normalizeText(value.nom || valueId);
+    groupTitle.textContent = isSelected ? `${selectionIndex + 1}. ${title}` : title;
   }
 
   const copyElement = findSvgElement(group, `phrases-${valueId}`);

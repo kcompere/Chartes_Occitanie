@@ -53,7 +53,7 @@ La version de la charte sert au nom des fichiers d'échange. Exemple : pour `BSI
 
 Les neuf valeurs proviennent de `data/valeurs_charte_pdf_structure_codex.json` et du fichier de secours local `data/values-inline.js` : Solidarité, Responsabilité, Échanges, Équité, Reconnaissance, Bienveillance, Confiance, Respect et Convivialité.
 
-Sélectionnez exactement trois valeurs avec les boutons `Ajouter` et `Retirer` ou par glisser-déposer. Les valeurs disponibles et retenues utilisent la même présentation compacte. Le lien de détail affiche la définition complète.
+Sélectionnez exactement trois valeurs avec les boutons `Ajouter` et `Retirer` ou par glisser-déposer. Les boutons `Haut`, `Bas`, `Monter` et `Descendre` permettent ensuite de fixer leur ordre d'affichage dans le formulaire, l'aperçu, les exports HTML et les PDF. Les valeurs disponibles et retenues utilisent la même présentation compacte. Le lien de détail affiche la définition complète.
 
 ## Étape 4 - Valeurs
 

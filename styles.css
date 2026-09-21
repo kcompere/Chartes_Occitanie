@@ -611,6 +611,42 @@ details summary:focus {
   background: #fff;
 }
 
+.value-row-option--selected {
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+}
+
+.value-row-option__actions,
+.value-order-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.value-order-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: rgba(15, 93, 122, 0.1);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.value-order-button {
+  min-height: 34px;
+  padding: 6px 10px;
+  font-size: 0.86rem;
+}
+
+.value-order-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .value-row-option__main {
   min-width: 0;
 }
@@ -632,11 +668,13 @@ details summary:focus {
   font-size: 0.9rem;
 }
 
-.value-card.is-dragging {
+.value-card.is-dragging,
+.value-row-option.is-dragging {
   opacity: 0.55;
 }
 
-.value-card.is-drop-target {
+.value-card.is-drop-target,
+.value-row-option.is-drop-target {
   border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(15, 93, 122, 0.15);
 }
@@ -2137,6 +2175,21 @@ body.format-a3 .commitment-frame .charte-item + .charte-item,
 
   .palette-preview {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .value-row-option--selected {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .value-row-option--selected .value-row-option__main,
+  .value-row-option--selected .value-row-option__actions {
+    grid-column: 1 / -1;
+  }
+
+  .value-row-option__actions,
+  .value-order-controls {
+    justify-content: flex-start;
   }
 
   .floating-nav {

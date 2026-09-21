@@ -32,10 +32,7 @@
     const resources = window.CHARTES_DOUANE_OCCITANIE_PDF_RESOURCES || {};
     const theme = resolvePdfTheme(snapshot);
     const values = snapshot.valuesRetenues || [];
-    const valueOrder = new Map(POSTER_VALUE_ORDER.map((valueId, index) => [valueId, index]));
-    const posterValues = [...values].sort(
-      (left, right) => (valueOrder.get(left.id) ?? Number.MAX_SAFE_INTEGER) - (valueOrder.get(right.id) ?? Number.MAX_SAFE_INTEGER)
-    );
+    const posterValues = [...values];
     const valueColorsById = Object.fromEntries(
       posterValues.map((value, index) => [value.id, theme.valueColors[index] || theme.primary])
     );
@@ -108,11 +105,14 @@
     try {
       if (fonts.regular && fonts.bold) {
         pdf.addFileToVFS("Spectral-Regular.ttf", fonts.regular);
-        pdf.addFont("Spectral-Regular.ttf", "Spectral", "normal");
+        pdf.addFont("Spectral-Regular.ttf", "Spectral", "normal", undefined, "Identity-H");
         pdf.addFileToVFS("Spectral-Bold.ttf", fonts.bold);
-        pdf.addFont("Spectral-Bold.ttf", "Spectral", "bold");
-        pdf.__kimFont = "Spectral";
-        return;
+        pdf.addFont("Spectral-Bold.ttf", "Spectral", "bold", undefined, "Identity-H");
+        pdf.setFont("Spectral", "normal");
+        if (pdf.getFontList?.().Spectral) {
+          pdf.__kimFont = "Spectral";
+          return;
+        }
       }
     } catch (error) {
       console.warn("La police PDF locale n’a pas pu être chargée.", error);
@@ -562,14 +562,12 @@
 
   function personalizeCompleteDefinitionForPdf(value, service) {
     const definition = String(value.definition_complete || "");
-    const serviceName = String(service?.nom || "").trim();
-    const personalized = definition.replace(/\(nom du service\)/gi, serviceName || "(nom du service)");
-    if (!serviceName) return personalized;
-    return personalized
-      .replace(/Le p[oô]le comptabilit[eé] de la recette interr[eé]gionale/gi, `Le service ${serviceName}`)
-      .replace(/Le pole comptabilite de la recette interregionale/gi, `Le service ${serviceName}`)
-      .replace(/la recette interr[eé]gionale/gi, `le service ${serviceName}`)
-      .replace(/la recette interregionale/gi, `le service ${serviceName}`);
+    return definition
+      .replace(/\(nom du service\)/gi, "le service")
+      .replace(/Le p[oô]le comptabilit[eé] de la recette interr[eé]gionale/gi, "Le service")
+      .replace(/Le pole comptabilite de la recette interregionale/gi, "Le service")
+      .replace(/la recette interr[eé]gionale/gi, "le service")
+      .replace(/la recette interregionale/gi, "le service");
   }
 
   async function generateA4Pdf(model) {
@@ -881,7 +879,8 @@
 
   function getSchemaValueCenters(selectedValues) {
     const selectedById = new Map(selectedValues.map((value) => [value.id, value]));
-    const rowHeights = POSTER_VALUE_ORDER.map((valueId) => {
+    const visualValueIds = getOrderedSchemaValueIds(selectedValues);
+    const rowHeights = visualValueIds.map((valueId) => {
       const value = selectedById.get(valueId);
       if (!value) return 54;
       return Math.max(136, 64 + getSchemaPhraseLineCount(value) * 20 + 32);
@@ -889,11 +888,22 @@
     const totalHeight = rowHeights.reduce((total, height) => total + height, 0);
     let cursor = Math.max(28, (1000 - totalHeight) / 2);
     const centers = {};
-    POSTER_VALUE_ORDER.forEach((valueId, index) => {
+    visualValueIds.forEach((valueId, index) => {
       centers[valueId] = cursor + rowHeights[index] / 2;
       cursor += rowHeights[index];
     });
     return centers;
+  }
+
+  function getOrderedSchemaValueIds(selectedValues) {
+    const selectedIds = (selectedValues || [])
+      .map((value) => value.id)
+      .filter((valueId) => POSTER_VALUE_ORDER.includes(valueId));
+    const selectedSet = new Set(selectedIds);
+    return [
+      ...selectedIds,
+      ...POSTER_VALUE_ORDER.filter((valueId) => !selectedSet.has(valueId)),
+    ];
   }
 
   function getSchemaPhraseLineCount(value) {
