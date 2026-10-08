@@ -45,7 +45,7 @@ Choisissez la palette graphique et la police principale. Ces choix s'appliquent 
 
 ## Étape 2 - Informations du service
 
-Renseignez le nom du service, la version de la charte, la date de validation, les textes d'introduction et d'engagement, puis ajoutez éventuellement un logo de service. Le logo Douanes est intégré automatiquement aux documents.
+Renseignez le nom du service, la version de la charte, la date de validation, les textes d'introduction et d'engagement, puis ajoutez éventuellement un logo de service. Le logo Douanes reste intégré automatiquement aux en-têtes des documents ; si un logo de service est renseigné, il remplace le logo central dans le schéma des valeurs.
 
 La version de la charte sert au nom des fichiers d'échange. Exemple : pour `BSI Millau` et `v2`, le ZIP sera nommé `bsi-millau-v2-projet-charte.zip`.
 

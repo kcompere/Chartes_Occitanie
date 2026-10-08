@@ -2196,6 +2196,7 @@ function buildGlobalValuesSvgMarkup(snapshot) {
     addSvgClass(svg, "values-framework-svg__image");
     setSvgStyleProperty(svg, "--schema-muted", mutedColor);
     setSvgBackgroundTransparent(svg);
+    replaceSvgCentralLogo(svg, snapshot.service?.logo);
 
     SVG_VALUE_IDS.forEach((valueId) => {
       const group = findSvgElement(svg, `valeur-${valueId}`);
@@ -2339,6 +2340,27 @@ function reflowSvgValueRows(svg, selectedById, format) {
 
     cursor += rowHeights[index];
   });
+}
+
+function replaceSvgCentralLogo(svg, logo) {
+  const logoDataUrl = normalizeText(typeof logo === "string" ? logo : logo?.dataUrl || "");
+  if (!logoDataUrl) {
+    return;
+  }
+
+  const logoImage = findSvgElement(svg, "image-ecusson-douanes");
+  if (!logoImage) {
+    return;
+  }
+
+  setSvgImageHref(logoImage, logoDataUrl);
+  logoImage.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  logoImage.setAttribute("data-logo-source", "service");
+}
+
+function setSvgImageHref(image, source) {
+  image.setAttribute("href", source);
+  image.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", source);
 }
 
 function getOrderedSvgValueIds(selectedById) {
